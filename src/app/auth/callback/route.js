@@ -25,9 +25,24 @@ export async function GET(request) {
         },
       }
     )
-    await supabase.auth.exchangeCodeForSession(code)
+
+    try {
+      // Exchange the code for a session
+      const { error: sessionError } = await supabase.auth.exchangeCodeForSession(code)
+      if (sessionError) throw sessionError
+
+      // Get the user
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError) throw userError
+
+      // Redirect to the dashboard
+      return NextResponse.redirect(new URL('/dashboard/calendar', request.url))
+    } catch (error) {
+      console.error('Error in callback:', error)
+      return NextResponse.redirect(new URL('/auth/error', request.url))
+    }
   }
 
-  // URL to redirect to after sign in process completes
-  return NextResponse.redirect(new URL('/dashboard', request.url))
+  // If no code is present, redirect to the home page
+  return NextResponse.redirect(new URL('/', request.url))
 } 
