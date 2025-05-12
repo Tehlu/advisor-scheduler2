@@ -419,7 +419,6 @@ export default function Calendar() {
           <div className="calendar-header">
             <div className="calendar-header-left">
               <div className="flex items-center justify-between w-full">
-                <h2 className="dashboard-title">Calendar</h2>
                 <button
                   onClick={handleLogout}
                   className="button button-secondary"
@@ -432,11 +431,10 @@ export default function Calendar() {
                   value={selectedProfile?.id || ''}
                   onChange={(e) => setSelectedProfile(profiles.find(p => p.id === e.target.value))}
                   className="select-input"
+                  style={{ color: '#23272f', fontWeight: 700 }}
                 >
                   {profiles.map(profile => (
-                    <option key={profile.id} value={profile.id}>
-                      {profile.profile_name}
-                    </option>
+                    <option key={profile.id} value={profile.id} style={{ color: '#23272f', fontWeight: 700 }}>{profile.profile_name}</option>
                   ))}
                 </select>
                 <button
@@ -452,11 +450,10 @@ export default function Calendar() {
                     value={selectedCalendar?.id || ''}
                     onChange={(e) => setSelectedCalendar(calendars.find(c => c.id === e.target.value))}
                     className="select-input"
+                    style={{ color: '#23272f', fontWeight: 700 }}
                   >
                     {calendars.map(calendar => (
-                      <option key={calendar.id} value={calendar.id}>
-                        {calendar.name}
-                      </option>
+                      <option key={calendar.id} value={calendar.id} style={{ color: '#23272f', fontWeight: 700 }}>{calendar.name}</option>
                     ))}
                   </select>
                   <button
@@ -468,19 +465,37 @@ export default function Calendar() {
                 </div>
               )}
             </div>
-            <div className="calendar-nav">
+            <div className="flex items-end justify-between w-full mt-2 mb-4">
+              {selectedProfile && selectedCalendar && (
+                <div style={{ marginLeft: 'auto', marginTop: '0', marginBottom: '50px' }}>
+                  <SchedulingLinkGenerator 
+                    profileId={selectedProfile.id} 
+                    calendarId={selectedCalendar.id} 
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between w-full mb-6" style={{ marginTop: '24px' }}>
+            <h2 className="dashboard-title" style={{ color: '#23272f', fontWeight: 700, marginBottom: 0, marginLeft: '2px' }}>Calendar</h2>
+            <div className="calendar-nav" style={{ marginBottom: 0 }}>
               <button 
                 className="button" 
                 onClick={handlePrevMonth}
                 disabled={currentDate.getMonth() <= 4}
+                style={{ color: '#23272f', fontWeight: 700 }}
               >
                 Previous
               </button>
-              <span>{currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+              <span style={{ color: '#23272f', fontWeight: 700, margin: '0 16px' }}>
+                {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+              </span>
               <button 
                 className="button" 
                 onClick={handleNextMonth}
                 disabled={currentDate.getMonth() >= 5}
+                style={{ color: '#23272f', fontWeight: 700 }}
               >
                 Next
               </button>
@@ -489,7 +504,7 @@ export default function Calendar() {
 
           <div className="calendar-grid relative">
             {weekDays.map(day => (
-              <div key={day} className="calendar-day-header font-bold text-gray-900">{day}</div>
+              <div key={day} className="calendar-day-header font-bold" style={{ color: '#23272f' }}>{day}</div>
             ))}
             {monthDates.map((date, index) => (
               <div
@@ -499,7 +514,7 @@ export default function Calendar() {
                 } relative`}
                 onClick={() => handleDateClick(date)}
               >
-                <span className="font-bold text-gray-900">{date.getDate()}</span>
+                <span className="font-bold" style={{ color: '#23272f' }}>{date.getDate()}</span>
                 {getEventsForDate(events, date).map(event => (
                   <div
                     key={event.id}
@@ -518,10 +533,10 @@ export default function Calendar() {
                       });
                     }}
                   >
-                    <div className="event-time font-bold">
+                    <div className="event-time font-bold" style={{ color: '#23272f' }}>
                       {formatTime(new Date(event.start_time))}
                     </div>
-                    <div className="event-title font-bold">{event.title}</div>
+                    <div className="event-title font-bold" style={{ color: '#23272f' }}>{event.title}</div>
                     <button
                       className="event-delete font-bold"
                       onClick={(e) => {
@@ -561,7 +576,7 @@ export default function Calendar() {
                       onClick={e => e.stopPropagation()}
                     >
                       <div className="flex justify-between items-start p-4 border-b border-blue-200">
-                        <h2 className="text-xl font-bold text-black pr-4">{selectedEvent.title}</h2>
+                        <h2 className="text-xl font-bold" style={{ color: '#23272f' }}>{selectedEvent.title}</h2>
                         <button
                           onClick={() => setSelectedEvent(null)}
                           className="text-gray-800 hover:text-black text-xl font-bold flex-shrink-0"
@@ -575,11 +590,11 @@ export default function Calendar() {
                         <div className="space-y-4">
                           {/* Time Information */}
                           <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                            <h3 className="text-base font-bold text-black mb-1">Time</h3>
-                            <p className="text-sm text-gray-900">
+                            <h3 className="text-base font-bold mb-1" style={{ color: '#23272f' }}>Time</h3>
+                            <p className="text-sm" style={{ color: '#23272f' }}>
                               {format(new Date(selectedEvent.start_time), 'EEEE, MMMM d, yyyy')}
                             </p>
-                            <p className="text-sm text-gray-900">
+                            <p className="text-sm" style={{ color: '#23272f' }}>
                               {format(new Date(selectedEvent.start_time), 'h:mm a')} - {format(new Date(selectedEvent.end_time), 'h:mm a')}
                             </p>
                           </div>
@@ -591,13 +606,13 @@ export default function Calendar() {
                               if (details.email) {
                                 return (
                                   <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                                    <h3 className="text-base font-bold text-black mb-1">Attendee Information</h3>
+                                    <h3 className="text-base font-bold mb-1" style={{ color: '#23272f' }}>Attendee Information</h3>
                                     <div className="space-y-1">
-                                      <p className="text-sm text-gray-900 break-words">
+                                      <p className="text-sm" style={{ color: '#23272f' }}>
                                         <span className="font-semibold">Email:</span> {details.email}
                                       </p>
                                       {details.linkedin && (
-                                        <p className="text-sm text-gray-900 break-words">
+                                        <p className="text-sm" style={{ color: '#23272f' }}>
                                           <span className="font-semibold">LinkedIn:</span>{' '}
                                           <a
                                             href={details.linkedin}
@@ -626,13 +641,13 @@ export default function Calendar() {
                               if (details.augmentedAnswers && Object.keys(details.augmentedAnswers).length > 0) {
                                 return (
                                   <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                                    <h3 className="text-base font-bold text-black mb-1">Questions and Answers</h3>
+                                    <h3 className="text-base font-bold mb-1" style={{ color: '#23272f' }}>Questions and Answers</h3>
                                     <div className="space-y-2">
                                       {Object.entries(details.augmentedAnswers).map(([questionId, data]) => (
                                         <div key={questionId} className="border-b border-blue-200 pb-1 last:border-0">
-                                          <p className="text-sm font-semibold text-black break-words">{questionId}</p>
-                                          <p className="text-sm text-gray-900 break-words">{data.original}</p>
-                                          <p className="text-sm text-gray-900 italic break-words mt-1">
+                                          <p className="text-sm font-semibold" style={{ color: '#23272f' }}>{questionId}</p>
+                                          <p className="text-sm" style={{ color: '#23272f' }}>{data.original}</p>
+                                          <p className="text-sm italic" style={{ color: '#23272f' }}>
                                             <span className="font-semibold">Additional Context:</span> {data.context}
                                           </p>
                                         </div>
@@ -654,8 +669,8 @@ export default function Calendar() {
                               if (details.linkedinContext) {
                                 return (
                                   <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                                    <h3 className="text-base font-bold text-black mb-1">LinkedIn Context</h3>
-                                    <p className="text-sm text-gray-900 whitespace-pre-wrap break-words">{details.linkedinContext}</p>
+                                    <h3 className="text-base font-bold mb-1" style={{ color: '#23272f' }}>LinkedIn Context</h3>
+                                    <p className="text-sm" style={{ color: '#23272f' }}>{details.linkedinContext}</p>
                                   </div>
                                 );
                               }
@@ -672,8 +687,8 @@ export default function Calendar() {
                               if (!details.email) {
                                 return (
                                   <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                                    <h3 className="text-base font-bold text-black mb-1">Notes</h3>
-                                    <p className="text-sm text-gray-900 whitespace-pre-wrap break-words">{selectedEvent.notes}</p>
+                                    <h3 className="text-base font-bold mb-1" style={{ color: '#23272f' }}>Notes</h3>
+                                    <p className="text-sm" style={{ color: '#23272f' }}>{selectedEvent.notes}</p>
                                   </div>
                                 );
                               }
@@ -699,15 +714,6 @@ export default function Calendar() {
               </div>
             ))}
           </div>
-
-          {selectedProfile && selectedCalendar && (
-            <div className="mt-8">
-              <SchedulingLinkGenerator 
-                profileId={selectedProfile.id} 
-                calendarId={selectedCalendar.id} 
-              />
-            </div>
-          )}
 
           {showProfileForm && (
             <div className="modal-overlay">
@@ -859,6 +865,13 @@ export default function Calendar() {
           )}
         </div>
       </div>
+      <style>{`
+        .calendar-day:hover {
+          background-color: #ede9fe !important;
+          transition: background 0.2s;
+          cursor: pointer;
+        }
+      `}</style>
     </>
   );
 } 

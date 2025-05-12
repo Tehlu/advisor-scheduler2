@@ -49,30 +49,38 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
-      <nav className="navbar">
-        <div className="container navbar-content">
-          <h1 className="navbar-title">Advisor Scheduler</h1>
-          <div className="navbar-user">
-            <span className="user-email">{user?.email}</span>
-            <button
-              className="button button-danger"
-              onClick={handleSignOut}
-            >
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <main className="container dashboard">
-        <div className="dashboard-card">
-          <h2 className="dashboard-title">Welcome to your Dashboard</h2>
-          <p className="dashboard-subtitle">
-            This is where you'll manage your schedule and appointments.
-          </p>
-        </div>
-      </main>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'var(--color-bg)',
+        fontFamily: 'var(--font-main)',
+        padding: '2rem',
+      }}
+    >
+      <h1
+        style={{
+          fontSize: '2rem',
+          fontWeight: 700,
+          color: 'var(--color-primary)',
+          marginBottom: '2rem',
+        }}
+      >
+        Dashboard
+      </h1>
+      <div
+        style={{
+          background: 'var(--color-sidebar)',
+          borderRadius: '1rem',
+          boxShadow: '0 2px 12px rgba(26,46,68,0.06)',
+          padding: '2rem',
+          border: '1px solid var(--color-border)',
+          color: 'var(--color-primary)',
+        }}
+      >
+        <p style={{ color: 'var(--color-secondary)', fontSize: '1.1rem' }}>
+          Welcome to your dashboard. Here you can manage your meetings, view your calendar, and update your profile.
+        </p>
+      </div>
     </div>
   )
 } 

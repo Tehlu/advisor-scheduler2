@@ -191,7 +191,7 @@ export default function SchedulingPage({ params }) {
         throw new Error('Failed to send notification');
       }
 
-      setSuccess(true);
+      window.location.href = '/schedule/confirmation';
     } catch (error) {
       console.error('Error scheduling meeting:', error);
       setError('Failed to schedule meeting. Please try again.');

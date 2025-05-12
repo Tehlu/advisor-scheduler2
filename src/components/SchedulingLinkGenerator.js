@@ -37,6 +37,8 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+
   const handleAddQuestion = () => {
     setFormData(prev => ({
       ...prev,
@@ -110,7 +112,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
 
       if (questionsError) throw questionsError;
 
-      setGeneratedLink(`${window.location.origin}/schedule/${slug}`);
+      setGeneratedLink(`${siteUrl}/schedule/${slug}`);
     } catch (error) {
       console.error('Error generating scheduling link:', error);
       setError('Failed to generate scheduling link');
@@ -120,8 +122,8 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
   };
 
   return (
-    <div className="scheduling-link-generator bg-white rounded-xl shadow-2xl p-8 border-2 border-indigo-100">
-      <h3 className="text-2xl font-extrabold mb-8 text-gray-900 border-b-2 border-indigo-100 pb-4">Generate Scheduling Link</h3>
+    <div style={{ background: '#e6ecf7', borderRadius: '1rem', padding: '1.5rem', marginBottom: '1rem' }}>
+      <h3 className="text-2xl font-extrabold mb-8 text-gray-900 border-b-2 border-indigo-100 pb-4" style={{ color: '#111' }}>Generate Scheduling Link</h3>
 
       {error && (
         <div className="error-message mb-6 bg-red-50 border-2 border-red-200 rounded-lg p-4">
@@ -161,7 +163,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
       <form onSubmit={handleGenerateLink} className="space-y-8">
         <div className="grid grid-cols-2 gap-6">
           <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
-            <label htmlFor="meeting_duration" className="block text-base font-extrabold text-gray-900 mb-3">
+            <label htmlFor="meeting_duration" style={{ color: '#111' }} className="block text-base font-extrabold text-gray-900 mb-3">
               Meeting Duration (minutes)
             </label>
             <input
@@ -179,7 +181,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
           </div>
 
           <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
-            <label htmlFor="max_days" className="block text-base font-extrabold text-gray-900 mb-3">
+            <label htmlFor="max_days" style={{ color: '#111' }} className="block text-base font-extrabold text-gray-900 mb-3">
               Max Days in Advance
             </label>
             <input
@@ -197,7 +199,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
           </div>
 
           <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
-            <label htmlFor="max_uses" className="block text-base font-extrabold text-gray-900 mb-3">
+            <label htmlFor="max_uses" style={{ color: '#111' }} className="block text-base font-extrabold text-gray-900 mb-3">
               Max Uses (optional)
             </label>
             <input
@@ -214,7 +216,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
           </div>
 
           <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
-            <label htmlFor="expires_at" className="block text-base font-extrabold text-gray-900 mb-3">
+            <label htmlFor="expires_at" style={{ color: '#111' }} className="block text-base font-extrabold text-gray-900 mb-3">
               Expiration Date (optional)
             </label>
             <input
@@ -246,7 +248,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
             {formData.questions.map((question, index) => (
               <div key={question.id} className="question-item p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
                 <div className="flex justify-between items-start mb-6">
-                  <h5 className="text-base font-extrabold text-gray-900">Question {index + 1}</h5>
+                  <h5 className="text-base font-extrabold" style={{ color: '#111' }}>Question {index + 1}</h5>
                   <button
                     type="button"
                     onClick={() => handleRemoveQuestion(question.id)}
@@ -259,7 +261,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
 
                 <div className="grid grid-cols-2 gap-6">
                   <div className="col-span-2">
-                    <label className="block text-base font-extrabold text-gray-900 mb-3">
+                    <label style={{ color: '#111' }} className="block text-base font-extrabold text-gray-900 mb-3">
                       Question Text
                     </label>
                     <input
@@ -272,7 +274,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
                   </div>
 
                   <div>
-                    <label className="block text-base font-extrabold text-gray-900 mb-3">
+                    <label style={{ color: '#111' }} className="block text-base font-extrabold text-gray-900 mb-3">
                       Question Type
                     </label>
                     <select
@@ -289,7 +291,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
                   </div>
 
                   <div className="flex items-center">
-                    <label className="flex items-center">
+                    <label style={{ color: '#111' }} className="flex items-center">
                       <input
                         type="checkbox"
                         checked={question.is_required}
@@ -308,7 +310,7 @@ export default function SchedulingLinkGenerator({ profileId, calendarId }) {
         <button
           type="submit"
           disabled={isGenerating}
-          className="w-full flex justify-center py-4 px-6 border-2 border-transparent rounded-xl shadow-lg text-lg font-extrabold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+          className="w-full flex justify-center py-8 px-12 border-2 border-transparent rounded-xl shadow-lg text-2xl font-extrabold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
         >
           {isGenerating ? 'Generating...' : 'Generate Link'}
         </button>
