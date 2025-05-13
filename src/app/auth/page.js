@@ -11,7 +11,22 @@ export default function AuthPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   )
   const router = useRouter()
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '')
+  
+   // More defensive way to define siteUrl
+   const siteUrl = (() => {
+    if (process.env.NEXT_PUBLIC_SITE_URL) {
+      return process.env.NEXT_PUBLIC_SITE_URL
+    }
+    if (typeof window !== 'undefined') {
+      return window.location.origin
+    }
+    return ''
+  })()
+
+  // Debug logs
+  console.log('NEXT_PUBLIC_SITE_URL:', process.env.NEXT_PUBLIC_SITE_URL)
+  console.log('window.location.origin:', typeof window !== 'undefined' ? window.location.origin : 'undefined')
+  console.log('Final siteUrl:', siteUrl)
 
   const handleGoogleLogin = async () => {
     try {
@@ -20,6 +35,11 @@ export default function AuthPage() {
         provider: 'google',
         options: {
           redirectTo: `${siteUrl}/auth/callback`,
+          skipBrowserRedirect: false,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
         },
       })
       if (error) throw error
